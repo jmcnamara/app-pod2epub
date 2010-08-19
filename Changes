@@ -1,7 +1,11 @@
 Revision history for App-Pod2Epub
 
 
+0.02 August 19 2010
+
+    + Converted to EBook::EPUB 0.5 API.
+
 0.01 August 18 2010
 
-    Initial CPAN release.
+    + Initial CPAN release.
 
