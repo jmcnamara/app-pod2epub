@@ -100,12 +100,19 @@ sub main {
     $epub->add_language( $language );
 
 
-    # Add the Dublin Core UUID and some other metadata to the OPF file.
+    # Add the Dublin Core UUID.
     my $du = Data::UUID->new();
     my $uuid = $du->create_from_name_str( NameSpace_URL, 'www.perl.org' );
 
-    $epub->add_identifier( "urn:uuid:$uuid" );
-    $epub->add_item( 'Pod2epub version', $App::Pod2Epub::VERSION );
+    {
+        # Ignore oreridden UUID warning form EBook::EPUB.
+        local $SIG{__WARN__} = sub { };
+        $epub->add_identifier( "urn:uuid:$uuid" );
+    }
+
+    # Add some other metadata to the OPF file.
+    $epub->add_meta_item( 'Pod2epub version',    $App::Pod2Epub::VERSION );
+    $epub->add_meta_item( 'EBook::EPUB version', $EBook::EPUB::VERSION );
 
 
     # Get the user supplied or default css file name.

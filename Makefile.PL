@@ -8,7 +8,7 @@ require 5.008;
 
 my %deps = (
         'Pod::Simple'  => 0,
-        'EBook::EPUB'  => 0,
+        'EBook::EPUB'  => 0.5,
         'Getopt::Long' => 0,
         'Pod::Usage'   => 0,
         'Data::UUID'   => 0,
