@@ -145,7 +145,7 @@ To convert Pod to ePub using the installed C<pod2epub> utility:
 
 At the moment this module isn't very useful on its own. It is mainly in existence as a backend for C<pod2epub>.
 
-It provides a framework to convert Pod documents to an XHTML format suitable for inclusion in an ePub eBook. The ePub creation is handled by L<Ebook::EPUB> in C<pod2epub>. Future versions will move that functionality into this module so that it has a utility of its own.
+It provides a framework to convert Pod documents to an XHTML format suitable for inclusion in an ePub eBook. The ePub creation is handled by L<EBook::EPUB> in C<pod2epub>. Future versions will move that functionality into this module so that it has a utility of its own.
 
 =head1 METHODS
 
