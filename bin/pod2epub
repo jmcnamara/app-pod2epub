@@ -278,7 +278,7 @@ pod2epub [options] podfile --outfile file.epub
         -m --man     Print the full manpage.
 
     Example:
-        pod2epub SomeModule.pm -o some_module.epub
+        pod2epub some_module.pm -o some_module.epub
 
 =head1 DESCRIPTION
 

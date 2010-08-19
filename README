@@ -11,7 +11,11 @@ DESCRIPTION
     http://en.wikipedia.org/wiki/Epub.
 
     This module comes with a pod2epub utility that will convert Pod to an
-    ePub eBook.
+    ePub eBook. For example:
+
+        pod2epub some_module.pm -o some_module.epub
+
+    See pod2epub --man for full documentation.
 
 INSTALLATION
     To install this module, run the following commands:

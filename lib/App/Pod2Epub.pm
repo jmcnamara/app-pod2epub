@@ -139,7 +139,7 @@ To create a simple filter to convert Pod to an XHTML format suitable for inclusi
 
 To convert Pod to ePub using the installed C<pod2epub> utility:
 
-    pod2epub SomeModule.pm -o some_module.epub
+    pod2epub some_module.pm -o some_module.epub
 
 =head1 USING THIS MODULE
 
