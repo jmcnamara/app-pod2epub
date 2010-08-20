@@ -19,19 +19,20 @@ use File::Temp 'tempfile';
 
 
 # Set some defaults for the commandline options.
-my $author       = 'Perl Author';
-my $title        = 'Pod Document';
-my $language     = 'en';
-my $out_filename = '';
-my $css_filename = '';
-my $user_css     = 0;
-my $xhtml_only   = 0;
-my $version      = 0;
-my $man          = 0;
-my $help         = 0;
-my $whine        = 1;
-my $errata       = 1;
-my $complain     = 0;
+my $author         = 'Perl Author';
+my $title          = 'Pod Document';
+my $language       = 'en';
+my $out_filename   = '';
+my $css_filename   = '';
+my $cover_filename = '';
+my $user_css       = 0;
+my $xhtml_only     = 0;
+my $version        = 0;
+my $man            = 0;
+my $help           = 0;
+my $whine          = 1;
+my $errata         = 1;
+my $complain       = 0;
 
 
 main();
@@ -100,11 +101,15 @@ sub main {
     $epub->add_language( $language );
 
 
+    # Add user defined cover image if it supplied.
+    add_cover( $epub, $cover_filename ) if $cover_filename;
+
     # Add the Dublin Core UUID.
     my $du = Data::UUID->new();
     my $uuid = $du->create_from_name_str( NameSpace_URL, 'www.perl.org' );
 
     {
+
         # Ignore oreridden UUID warning form EBook::EPUB.
         local $SIG{__WARN__} = sub { };
         $epub->add_identifier( "urn:uuid:$uuid" );
@@ -218,6 +223,36 @@ sub get_css_file {
     return $css_filename;
 }
 
+
+###############################################################################
+#
+# add_cover()
+#
+# Add a cover image to the eBook.
+#
+sub add_cover {
+
+    my $epub           = shift;
+    my $cover_filename = shift;
+
+
+    # Check if the cover image exists.
+    if ( -e $cover_filename ) {
+
+        my $cover_id =
+          $epub->copy_image( $cover_filename, 'images/__cover.jpg' );
+        $epub->add_meta_item( 'cover', $cover_id );
+
+        return $cover_id;
+
+    }
+    else {
+        warn "Cover image $cover_filename not found.\n";
+        return undef;
+    }
+}
+
+
 ###############################################################################
 #
 # get_commandline_options()
@@ -228,18 +263,19 @@ sub get_commandline_options {
 
     # Use GetOptions for the commandline parsing.
     GetOptions(
-        'a|author=s'   => \$author,
-        't|title=s'    => \$title,
-        'l|language=s' => \$language,
-        'o|outfile=s'  => \$out_filename,
-        'c|css=s'      => \$css_filename,
-        'v|version'    => \$version,
-        'x|xhtml-only' => \$xhtml_only,
-        'h|help'       => \$help,
-        'man'          => \$man,
-        'whine!'       => \$whine,
-        'errata!'      => \$errata,
-        'complain!'    => \$complain,
+        'a|author=s'     => \$author,
+        't|title=s'      => \$title,
+        'l|language=s'   => \$language,
+        'o|outfile=s'    => \$out_filename,
+        's|stylesheet=s' => \$css_filename,
+        'c|cover=s'      => \$cover_filename,
+        'v|version'      => \$version,
+        'x|xhtml-only'   => \$xhtml_only,
+        'h|help'         => \$help,
+        'man'            => \$man,
+        'whine!'         => \$whine,
+        'errata!'        => \$errata,
+        'complain!'      => \$complain,
     ) or pod2usage( 2 );
 
     # Print the application version and exit.
@@ -270,12 +306,13 @@ pod2epub - A utility to convert Pod to an ePub eBook.
 pod2epub [options] podfile --outfile file.epub
 
     Main options (see manpage for all options):
-        -o --outfile Name of output ePub file. Required argument.
-        -t --title   Add ePub book title.
-        -a --author  Add ePub book author.
-        -c --css     Change the default stylesheet.
-        -h --help    Print a brief help message.
-        -m --man     Print the full manpage.
+        -o --outfile    Name of output ePub file.
+        -t --title      Add ePub book title.
+        -a --author     Add ePub book author.
+        -s --stylesheet Change the default stylesheet.
+        -c --cover      Add cover image.
+        -h --help       Print a brief help message.
+        -m --man        Print the full manpage.
 
     Example:
         pod2epub some_module.pm -o some_module.epub
@@ -299,12 +336,16 @@ The input file containing Pod documentation.
 
 The output ePub file. This is a required argument.
 
-=item B<-c or --css>
+=item B<-s or --stylesheet>
 
 Specify the CSS stylesheet that the ePub eBook will use. If none is supplied the following minimal stylesheet is used:
 
     h1         { font-size: 110%; }
     h2, h3, h4 { font-size: 100%; }
+
+=item B<-c or --cover>
+
+Add an image for use as a book cover.
 
 =item B<-t or --title>
 
@@ -350,10 +391,6 @@ Generate a "Pod Errors" section at the end of the document if there are Pod erro
 =head1 TODO
 
 =over 4
-
-=item *
-
-Add the option of adding a book cover.
 
 =item *
 

@@ -1,6 +1,12 @@
 Revision history for App-Pod2Epub
 
 
+0.03 August XX 2010
+
+    + Added option for adding eBook cover.
+
+    ! -c|-css option changed to -s|--stylesheet. -c is now used for cover.
+
 0.02 August 19 2010
 
     + Converted to EBook::EPUB 0.5 API.
