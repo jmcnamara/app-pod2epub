@@ -17,7 +17,7 @@ use Pod::Simple::XHTML;
 use vars qw(@ISA $VERSION);
 
 @ISA     = 'Pod::Simple::XHTML';
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 ###############################################################################
 #

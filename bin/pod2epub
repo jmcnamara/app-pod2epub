@@ -110,7 +110,7 @@ sub main {
 
     {
 
-        # Ignore oreridden UUID warning form EBook::EPUB.
+        # Ignore overridden UUID warning form EBook::EPUB.
         local $SIG{__WARN__} = sub { };
         $epub->add_identifier( "urn:uuid:$uuid" );
     }
@@ -228,7 +228,8 @@ sub get_css_file {
 #
 # add_cover()
 #
-# Add a cover image to the eBook.
+# Add a cover image to the eBook. Add cover metadata for iBooks and add an
+# additional cover page for other eBook readers.
 #
 sub add_cover {
 
@@ -237,19 +238,45 @@ sub add_cover {
 
 
     # Check if the cover image exists.
-    if ( -e $cover_filename ) {
-
-        my $cover_id =
-          $epub->copy_image( $cover_filename, 'images/__cover.jpg' );
-        $epub->add_meta_item( 'cover', $cover_id );
-
-        return $cover_id;
-
-    }
-    else {
+    if ( !-e $cover_filename ) {
         warn "Cover image $cover_filename not found.\n";
         return undef;
     }
+
+    # Add cover metadata for iBooks.
+    my $cover_id = $epub->copy_image( $cover_filename, 'images/cover.jpg' );
+    $epub->add_meta_item( 'cover', $cover_id );
+
+
+    # Add an additional cover page for other eBook readers.
+    my $cover_xhtml =
+        qq[<?xml version="1.0" encoding="UTF-8"?>\n]
+      . qq[<!DOCTYPE html\n]
+      . qq[     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"\n]
+      . qq[    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n\n]
+      . qq[<html xmlns="http://www.w3.org/1999/xhtml">\n]
+      . qq[<head>\n]
+      . qq[<title></title>\n]
+      . qq[<meta http-equiv="Content-Type" ]
+      . qq[content="text/html; charset=iso-8859-1"/>\n]
+      . qq[<style type="text/css"> img { max-width: 100%; }</style>\n]
+      . qq[</head>\n]
+      . qq[<body>\n]
+      . qq[    <img alt="" src="../images/cover.jpg" />\n]
+      . qq[</body>\n]
+      . qq[</html>\n\n];
+
+    # Crete a temp file for the cover xhtml.
+    my ( $tmp_fh, $tmp_filename ) = tempfile();
+
+    print $tmp_fh $cover_xhtml;
+    close $tmp_fh;
+
+    $epub->copy_xhtml( $tmp_filename, 'text/cover.xhtml', linear => 'no' );
+
+    unlink $cover_xhtml;
+
+    return $cover_id;
 }
 
 
