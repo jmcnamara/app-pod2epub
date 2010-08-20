@@ -279,8 +279,9 @@ sub add_cover {
         type  => 'cover',
         href  => 'text/cover.xhtml',
         title => 'Cover',
-      }
-      $epub->guide->add_reference( $guide_options );
+    };
+
+    $epub->guide->add_reference( $guide_options );
 
     # Cleanup the temp file.
     unlink $cover_xhtml;
