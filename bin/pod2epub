@@ -247,7 +247,6 @@ sub add_cover {
     my $cover_id = $epub->copy_image( $cover_filename, 'images/cover.jpg' );
     $epub->add_meta_item( 'cover', $cover_id );
 
-
     # Add an additional cover page for other eBook readers.
     my $cover_xhtml =
         qq[<?xml version="1.0" encoding="UTF-8"?>\n]
@@ -272,8 +271,18 @@ sub add_cover {
     print $tmp_fh $cover_xhtml;
     close $tmp_fh;
 
+    # Add the cover page to the ePub doc.
     $epub->copy_xhtml( $tmp_filename, 'text/cover.xhtml', linear => 'no' );
 
+    # Add the cover to the OPF guide.
+    my $guide_options = {
+        type  => 'cover',
+        href  => 'text/cover.xhtml',
+        title => 'Cover',
+      }
+      $epub->guide->add_reference( $guide_options );
+
+    # Cleanup the temp file.
     unlink $cover_xhtml;
 
     return $cover_id;
