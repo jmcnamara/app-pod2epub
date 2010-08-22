@@ -7,7 +7,7 @@ use strict;
 require 5.008;
 
 my %deps = (
-        'Pod::Simple'  => 0,
+        'Pod::Simple'  => 3.06,
         'EBook::EPUB'  => 0.5,
         'Getopt::Long' => 0,
         'Pod::Usage'   => 0,
