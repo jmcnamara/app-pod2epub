@@ -58,34 +58,6 @@ sub new {
     return $self;
 }
 
-###############################################################################
-#
-# start_L()
-#
-# Override the Pod::Simple::XHTML/Methody function that deal with the start
-# of Pod L<> links in order to encode XML entities in a href url. The text of
-# href is already entity encoded by the parent module.
-#
-sub start_L {
-
-    # The main code is taken from Pod::Simple::XHTML.
-    my ( $self, $flags ) = @_;
-    my ( $type, $to, $section ) = @{$flags}{ 'type', 'to', 'section' };
-    my $url =
-        $type eq 'url' ? $to
-      : $type eq 'pod' ? $self->resolve_pod_page_link( $to, $section )
-      : $type eq 'man' ? $self->resolve_man_page_link( $to, $section )
-      :                  undef;
-
-    # This is the new/overridden section.
-    if ( defined $url ) {
-        $url = Pod::Simple::XHTML::encode_entities( $url );
-    }
-
-    # If it's an unknown type, use an attribute-less <a> like HTML.pm.
-    $self->{'scratch'} .= '<a' . ( $url ? ' href="' . $url . '">' : '>' );
-}
-
 
 1;
 
