@@ -5,7 +5,7 @@ package App::Pod2Epub;
 # App::Pod2Epub - Convert Pod to an ePub eBook.
 #
 #
-# Copyright 2010, John McNamara, jmcnamara@cpan.org
+# Copyright 2010-2012, John McNamara, jmcnamara@cpan.org
 #
 # Documentation after __END__
 #
@@ -17,7 +17,7 @@ use Pod::Simple::XHTML;
 use vars qw(@ISA $VERSION);
 
 @ISA     = 'Pod::Simple::XHTML';
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 ###############################################################################
 #
@@ -153,7 +153,7 @@ John McNamara, C<jmcnamara@cpan.org>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2010 John McNamara.
+Copyright 2010-2012 John McNamara.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published

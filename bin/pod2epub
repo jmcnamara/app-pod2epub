@@ -4,7 +4,7 @@
 #
 # pod2epub - A utility to convert Pod to an ePub eBook.
 #
-# Copyright 2010, John McNamara, jmcnamara@cpan.org
+# Copyright 2010-2012, John McNamara, jmcnamara@cpan.org
 #
 # Documentation after __END__
 #
@@ -454,7 +454,7 @@ John McNamara jmcnamara@cpan.org
 
 =head1 COPYRIGHT
 
-© MMX, John McNamara.
+© MMXII, John McNamara.
 
 All Rights Reserved. This module is free software. It may be used, redistributed and/or modified under the same terms as Perl itself.
 
